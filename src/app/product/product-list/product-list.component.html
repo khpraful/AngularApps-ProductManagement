@@ -1,0 +1,106 @@
+
+ <ng-template #noImage>
+        No Product
+</ng-template>
+<div class="container" *ngIf="products && products!==null;else noImage">
+       
+
+        <div class="panel panel-primary">
+            <div class="panel panel-heading">
+               Showing &nbsp; {{products.length}} products
+            </div> 
+            <div class="panel panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        Filter By:&nbsp;
+                    </div>
+                    <div class="col-md-4">
+                       <!-- <input type="text" (change)="changedText($event)" #txtFilter> -->
+                         <!-- <input type="text" (change)="changedText(txtFilter.value)" 
+                         [value]='filterText' #txtFilter> -->
+                         <!-- <input type="text" (change)="changedText(txtFilter)" 
+                         [value]='filterText' #txtFilter="ngModel" ngModel > -->
+                         <input type="text" [(ngModel)]="filterText">
+                       <br>
+                      Text goes here : <span>{{filterText}}</span>
+                    </div>
+                    <div class="col-md-2">
+                        Sort By: &nbsp;
+                    </div>
+                    <div class="col-md-4" *ngIf="productProperties && productProperties.length > 0 && productProperties!==null">
+                       <select name="ddlCriteria" id="ddlCriteria">
+                           <option value="">
+                               --select--
+                           </option>
+                           <option *ngFor="let key of productProperties">
+                            {{key}}
+                           </option>
+                       </select>
+                    </div>
+                </div>
+        
+                <div class="row">
+                   
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead style="background-color: skyblue">
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Code</th>
+                                <th>Availability</th>
+                                <th>Price</th>
+                                <th>Rating</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let product of products|productFilter:filterText">
+                                    <td>                                        
+                                        <!-- <img [src]="product.imageUrl" alt="" 
+                                        [style.margin.px]="imgMagrin"
+                                        [style.width.px]="imWidth"> -->
+
+                                         <!-- <img [src]="product.imageUrl" alt="" 
+                                         [ngClass]="{'imgStyle':applyStyle}"> -->
+
+                                         <!-- used to navigate to product detail component uising routing  -->
+                                         
+                                         <!-- <img [src]="product.imageUrl" alt="" 
+                                         [ngStyle]="{'margin':applyStyle == true ?'2px':'0px'} && 
+                                         {'width':applyStyle==true?'50px':'0px'} "
+                                         [title]="product.ProductName" 
+                                         [routerLink]="['/products',product.productId]"> -->
+
+                                         <!-- used to navigate to product detail component uising routing bu click event   -->
+
+                                         <img [src]="product.imageUrl" alt="" 
+                                         [ngStyle]="{'margin':applyStyle == true ?'2px':'0px'} && 
+                                         {'width':applyStyle==true?'50px':'0px'} "
+                                         [title]="product.ProductName" 
+                                         (click)="goToProductDetail(product.productId)">
+                                        
+                                        </td>
+                                    <td>{{product.productName}}</td>
+                                    <td>{{product.productCode}}</td>
+                                    <td>{{product.releaseDate}}</td>
+                                    <td>{{product.price}}</td>
+                                    <td>
+                                       
+                                        <app-star [rating]="product.starRating"
+                                        (ratingChanged)='updateProductRating(product.productId,$event)'></app-star>
+                                        <!-- {{product.starRating}} -->
+                                    
+                                    </td>
+                                    <td>
+                                        <input type="button" value="Delete"
+                                        class="btn btn-danger" (click)="deleteProduct(product.productId)" >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>       
+        </div>
+        </div>
